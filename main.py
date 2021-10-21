@@ -14,7 +14,7 @@ FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POSITION = (195, 250)
 
 
-ED_CAR = scale_image(pygame.image.load("imgs/red-car.png"), 0.55)
+RED_CAR = scale_image(pygame.image.load("imgs/red-car.png"), 0.55)
 GREEN_CAR = scale_image(pygame.image.load("imgs/green-car.png"), 0.55)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
@@ -24,7 +24,7 @@ pygame.display.set_caption("Racing Game!")
 MAIN_FONT = pygame.font.SysFont("comicsans", 44)
 
 FPS = 60
-player_car = cars.PlayerCar(4, 4,ED_CAR)
+player_car = cars.PlayerCar(4, 4,RED_CAR)
 
 def draw(win, images):
     for img, pos in images:
@@ -39,7 +39,7 @@ images = [(GRASS, (0, 0)), (TRACK, (0, 0)),
 while run:
     clock.tick(FPS)
     draw(WIN, images)
-
+    cars.move_player(player_car)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
