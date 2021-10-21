@@ -51,10 +51,9 @@ class AbstractCar:
 
 
 class PlayerCar(AbstractCar):
-    def __init__(self,pic, max_vel, rotation_vel):
-        super().__init__(max_vel, rotation_vel)
-        IMG = pic
-        START_POS = (180, 200)
+    START_POS = (180, 200)
+    def __init__(self, max_vel, rotation_vel, pic):
+        super().__init__(max_vel, rotation_vel, pic)
 
     def reduce_speed(self):
         self.vel = max(self.vel - self.acceleration / 2, 0)
