@@ -1,4 +1,13 @@
 import png
+import random
+
+
+def generate_random_point(width, height):
+    return [random.randint(0, width), random.randint(0, height)]
+
+
+def generate_random_points(number_of_points, width, height):
+    return [generate_random_point(width, height) for _ in range(number_of_points)]
 
 
 def write_png_black_and_white(pixels, path):
@@ -23,7 +32,7 @@ def write_png_black_and_white(pixels, path):
         width = len(pixels[y])
         for x in range(width):
             color = 0 if pixels[y][x] == 1 else 255
-            row = row + (color, color, color)
+            row = row + (color,)
         img.append(row)
     with open(path, 'wb') as f:
         w = png.Writer(width, height, greyscale=True)
@@ -36,15 +45,17 @@ def raw_data_to_int(rows):
     0 for pixel that was white in the original image, 1 otherwise.
 
     Each row in rows should be rgb values of all the pixels in the corresponding line
-    of the original image (i.e. row with 2 pixels should be represented with 6 items in raw data)
+    of the original image (i.e. row with 2 pixels should be represented with 8 items in raw data)
     """
     int_data = []
     for row in rows:
+        print(len(row))
         int_values = [x for x in row]
         values = []
-        for i in range(0, len(row), 3):
+        for i in range(0, len(row), 4):
             values.append(1 if int_values[i] != 255 and int_values[i + 1] != 255 and int_values[i + 2] != 255
                           else 0)
+        print(len(values))
         int_data.append(values)
 
     return int_data
@@ -57,9 +68,7 @@ def read_png(path):
     """
 
     r = png.Reader(path)
-    _, _, rows, _ = r.read()
-
+    width, height, rows, _ = r.read()
+    print('width: ' + str(width) + ', height: ' + str(height))
     return raw_data_to_int(rows)
-
-
 
