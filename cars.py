@@ -13,6 +13,12 @@ class AbstractCar:
         self.x, self.y = self.START_POS
         self.acceleration = 0.1
 
+    def reset(self):
+        self.vel = 0
+        self.angle = 0
+        self.x, self.y = self.START_POS
+        self.acceleration = 0.1
+
     def rotate(self, left=False, right=False):
         if left:
             self.angle += self.rotation_vel
@@ -60,8 +66,11 @@ class PlayerCar(AbstractCar):
         self.move()
 
     def bounce(self):
-        self.vel = -self.vel
+        #self.vel = -self.vel
+        self.vel = 0
         self.move()
+
+    def auto_mood(self):
 
 
 class ComputerCar(AbstractCar):
