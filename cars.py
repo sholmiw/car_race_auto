@@ -71,6 +71,7 @@ class PlayerCar(AbstractCar):
         self.move()
 
     def auto_mood(self):
+        pass
 
 
 class ComputerCar(AbstractCar):
