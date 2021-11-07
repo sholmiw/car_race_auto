@@ -18,9 +18,9 @@ FINISH = pygame.image.load("imgs/finish.png")
 FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POSITION = (195, 250)
 
-
-RED_CAR = scale_image(pygame.image.load("imgs/red-car.png"), 0.55)
-GREEN_CAR = scale_image(pygame.image.load("imgs/green-car.png"), 0.55)
+CAR_SCALE = 0.25 # 0.55
+RED_CAR = scale_image(pygame.image.load("imgs/red-car.png"), CAR_SCALE)
+GREEN_CAR = scale_image(pygame.image.load("imgs/green-car.png"), CAR_SCALE)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))

@@ -3,6 +3,10 @@ import time
 import math
 import pygame
 
+CAR_FULL_SIZE_X =38
+CAR_FULL_SIZE_Y =76
+CAR_SCALE = 0.25
+
 class AbstractCar:
     def __init__(self, max_vel, rotation_vel,img):
         self.img = img
@@ -12,8 +16,8 @@ class AbstractCar:
         self.angle = 0 # car facing north/up the screen
         self.x, self.y = self.START_POS
         self.acceleration = 0.1
-        self.offsetX  = 10 # 10 # the width of the car is 20 px
-        self.offsetY = 23 # 23 the length of the car is ~50 px
+        self.offsetX  = CAR_FULL_SIZE_X * CAR_SCALE * 0.5 # 10 # the width of the car is 20 px
+        self.offsetY = CAR_FULL_SIZE_Y * CAR_SCALE * 0.5 # 23 the length of the car is ~50 px
 
     def getX_Y(self):
         return self.x,self.y
