@@ -9,9 +9,20 @@ class AbstractCar:
         self.max_vel = max_vel
         self.vel = 0
         self.rotation_vel = rotation_vel
-        self.angle = 0
+        self.angle = 0 # car facing north/up the screen
         self.x, self.y = self.START_POS
         self.acceleration = 0.1
+        self.offsetX  = 10 # 10 # the width of the car is 20 px
+        self.offsetY = 23 # 23 the length of the car is ~50 px
+
+    def getX_Y(self):
+        return self.x,self.y
+
+    def getOffset(self):
+        return self.offsetX,self.offsetY
+
+    def get_angle(self):
+        return self.angle
 
     def reset(self):
         self.vel = 0
@@ -48,6 +59,7 @@ class AbstractCar:
         car_mask = pygame.mask.from_surface(self.img)
         offset = (int(self.x - x), int(self.y - y))
         poi = mask.overlap(car_mask, offset)
+        #print (poi)
         return poi
 
     def reset(self):
@@ -70,7 +82,7 @@ class PlayerCar(AbstractCar):
         self.vel = 0
         self.move()
 
-    def auto_mood(self):
+    #def auto_mood(self):
         pass
 
 
@@ -156,3 +168,41 @@ def move_player(player_car,ACTIVEMOD = True):
     else:
         #use alg to move the car
         pass
+
+class sensor():
+    def __init__(self, car, posX, posY, length, offsetSensor=0):
+        self.offsetSensor = offsetSensor + 90  # we have a 90 degree offset when we start
+        self.faceing = car.get_angle()
+        self.length = length
+        self.x= posX
+        self.y= posY
+        self.car = car
+        self.point_x =0
+        self.point_y =0
+
+    def calc(self):
+        x,y = self.car.getX_Y()
+        self.faceing = self.car.get_angle() +self.offsetSensor
+        radians = math.radians(self.faceing)
+        #print(self.faceing)
+
+        desired_point_x_length = math.cos(radians)*self.length
+        desired_point_y_length = math.sin(radians)*self.length *-1
+        self.point_x = int(desired_point_x_length) + x
+        self.point_y = int(desired_point_y_length) + y
+
+    def collide(self, mask, x=0, y=0):
+        sensor_mask = pygame.mask.from_surface()
+        offset = (int(self.x - x), int(self.y - y))
+        poi = mask.overlap(sensor_mask, offset)
+        # print (poi)
+        return poi
+
+
+    def draw(self, win):
+        self.calc()
+        x, y = self.car.getX_Y()
+        offX, offY = self.car.getOffset()
+        pygame.draw.circle(win, (255, 0, 0), (self.point_x+offX,self.point_y+offY), 5)
+        pygame.draw.line(win, (255, 0, 0),(x+offX,y+offY),(self.point_x+offX,self.point_y+offY))
+        #print(self.point_x,self.point_y)

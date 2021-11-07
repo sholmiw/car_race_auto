@@ -1,9 +1,12 @@
-import pygame
+import pygame,pygame.mixer
 import time
 import math
 from utils import scale_image, blit_rotate_center, blit_text_center
 pygame.font.init()
 import cars
+
+pygame.init()
+#music = pygame.mixer.music.load('boom.wav')
 
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
@@ -27,7 +30,9 @@ MAIN_FONT = pygame.font.SysFont("comicsans", 44)
 
 FPS = 60
 player_car = cars.PlayerCar(4, 4,RED_CAR)
-
+frontSense = cars.sensor(player_car,player_car.x,player_car.y,70)
+leftSense = cars.sensor(player_car,player_car.x,player_car.y,70,offsetSensor=45)
+rigthSense = cars.sensor(player_car,player_car.x,player_car.y,70,offsetSensor=-45)
 def draw(win, images):
     for img, pos in images:
         win.blit(img, pos)
@@ -37,21 +42,27 @@ def draw(win, images):
     win.blit(vel_text, (10, HEIGHT - vel_text.get_height() - 10))
     ##########
     player_car.draw(win)
+    frontSense.draw(win)
+    leftSense.draw(win)
+    rigthSense.draw(win)
     pygame.display.update()
+
 reset = False
 run = True
 clock = pygame.time.Clock()
 images = [(GRASS, (0, 0)), (TRACK, (0, 0)),
           (FINISH, FINISH_POSITION)]
 
-def handle_collision(player_car):
-    if player_car.collide(TRACK_BORDER_MASK) != None:
+def handle_collision(object):
+    if object.collide(TRACK_BORDER_MASK) != None:
         print("boom! we have a collision")
-        player_car.bounce()
+        #music.play('boom.wav')
+        object.bounce()
 
 while run:
     clock.tick(FPS)
     draw(WIN, images)
+
     #############
     keys = pygame.key.get_pressed()
     if keys[pygame.K_r]:
